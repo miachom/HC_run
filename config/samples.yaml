@@ -2,8 +2,8 @@
 ## can be customized as needed
 
 base_file_name:
- TCGA-A8-A0A7-01A-11D-A88Z-36: /home/ma1111/TCGA_chrX/HC_Snakemake/config/bam.list
- TCGA-BH-A202-10A-01D-A899-36: /home/ma1111/TCGA_chrX/HC_Snakemake/config/bam.list
+ TCGA-A8-A0A7-01A-11D-A88Z-36: /path/to/config/bam.list
+ TCGA-BH-A202-10A-01D-A899-36: /path/to/config/bam.list
 
 tumor:
  TCGA-A8-A0A7-01A-11D-A88Z-36: TCGA-A8-A0A7-01A-11D-A88Z-36
