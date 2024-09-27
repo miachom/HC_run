@@ -1,0 +1,16 @@
+##Config file containing information for the haplotype caller
+
+## Tools Path
+gatk_path: /mnt/storage/apps/gatk-4.3.0.0/gatk
+java: /usr/bin/java
+tabix: /usr/bin/tabix
+picard_jar: /home/ma1111/tools/picard.jar
+
+## Path to reference files
+reference_genome: /mnt/storage/labs/sviswanathan/GATK_ref/Homo_sapiens_assembly38.fasta
+reference_dict: /mnt/storage/labs/sviswanathan/GATK_ref/Homo_sapiens_assembly38.dict
+
+#Interval chromosomes
+chromosomes: ['chr1','chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9','chr10','chr11','chr12','chr13','chr14','chr15','chr16','chr17','chr18','chr19','chr19','chr20','chr21','chr22','chrX', 'chrY']
+
+#gvcf_mode: True
