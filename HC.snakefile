@@ -35,5 +35,7 @@ rule haplotype_caller:
           -reference {params.reference_genome} \
           -input {input.tumor_filepath} \
           -intervals {wildcards.chromosomes} \
+          -bamout {output.bam} \
           -output {output.vcf}) 2> {log}"
-#          --bam-output {output.bam} \
+
+
