@@ -1,6 +1,8 @@
-__default__:
+    __default__:
     q:  broad
-    h_vmem: 40G
-    h_rt:   300:0:0
-    pe: smp 6
-    binding:    linear:1
+    h_vmem: 32G          # Requested memory per job
+    h_rt:   30:0:0       # Requested runtime
+    pe: mpi 4            # Use 4 cores for the MPI environment, adjust accordingly
+    binding:    linear:4 # Linear binding with 4 slots
+
+
