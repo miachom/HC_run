@@ -28,14 +28,16 @@ rule haplotype_caller:
         gatk = config["gatk_path"],
         tumor = lambda wildcards: config["tumor"][wildcards.tumor]
         #gvcf_mode=config.get("gvcf_mode", False)  # Optionally turn on GVCF mode via config
+    threads: 8 # user defined no. of threads and adjust based on job suitability and cluster available resources 
     log:
         "logs/HC/{tumor}/unfiltered_{chromosomes}_HC.txt"
     shell:
-         "({params.gatk} HaplotypeCaller \
+         """
+          {params.gatk} HaplotypeCaller \
           -reference {params.reference_genome} \
           -input {input.tumor_filepath} \
           -intervals {wildcards.chromosomes} \
-          -bamout {output.bam} \
-          -output {output.vcf}) 2> {log}"
-
+          -output {output.vcf} \
+          --native-pair-hmm-threads {threads} 2> {log} # enables multi threaded implementation using native pairHMM 
+          """
 
