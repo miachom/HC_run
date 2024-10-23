@@ -13,6 +13,7 @@
 
 - Conda
 - Snakemake
+- MPI
 
 ## Directory structure
 
