@@ -1,6 +1,6 @@
 # HC_snakemake
 
-* This repository contains pipeline built with Snakemake to detect somatic and germline variants using GATK HaplotypeCaller function. The variant calling is based on GATK Best Practices of variant detection by calling SNPs and indels simultaneously via local de-novo assembly of haplotypes.
+* This repository contains pipeline built with Snakemake to detect somatic and germline variants using GATK HaplotypeCaller function. The variant calling is based on GATK Best Practices of variant detection by calling SNPs and indels simultaneously via local de-novo assembly of haplotypes. The run uses PairHMM using the OpenMP multi-threaded AVX-accelerated native PairHMM implementation.
 
 * The WGS data used here are TCGA data from tissues such as breast, ovary and uterus and downloaded from Genomic Data Commons.
 
