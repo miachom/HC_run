@@ -1,0 +1,65 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -N HC_parallel                               # Job name
+#$ -pe pvm 4                                                    # Parallel environment with 4 slots
+#$ -o /home/ma1111/TCGA_chrX/test_runs/chr_test/logs/output.log    # Path to standard output log file
+#$ -e /home/ma1111/TCGA_chrX/test_runs/chr_test/logs/error.log     # Path to standard error log file
+#$ -cwd                                                 # Run the job from the current directory
+#$ -V                                                   # Export all environment variables to the job
+
+# Enable debugging
+set -x
+echo "Starting haplotype_caller job"
+
+source /etc/profile
+mkdir /path/to/output
+ref_path=/mnt/storage/labs/sviswanathan
+out_path=/path/to/output
+gatk_path=/mnt/storage/apps/gatk-4.3.0.0/gatk
+chrs=('chr1', 'chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9','chr10','chr11','chr12','chr13','chr14','chr15','chr16','chr17','chr18','chr19','chr20','chr21','chr22','chrX', 'chrY')
+bam_list="path/to/bam_list.txt"
+
+# Genome build for the aligned BAM is hg38
+# Parallelize HaplotypeCaller for multiple BAM files using GNU Parallel
+# Requires GNU Parallel to be installed
+
+# Check if bam_list exists and has content
+if [ ! -f "$bam_list" ]; then
+    echo "Error: BAM list file $bam_list not found." >&2
+    exit 1
+fi
+
+if [ ! -s "$bam_list" ]; then
+    echo "Error: BAM list file $bam_list is empty." >&2
+    exit 1
+fi
+
+#HC as a function
+haplotype_caller() {
+    local bam_file=$1
+    local sample=$(basename "$bam_file" .bam) # Extract sample name from BAM filename
+    local output_vcf="${out_path}/${sample}_unfiltered.vcf.gz"
+echo "Processing sample: $sample"
+    $gatk_path --java-options "-Xmx32G" HaplotypeCaller \
+        -I "$bam_file" \
+        -R "${ref_path}/GATK_ref/Homo_sapiens_assembly38.fasta" \
+        -O "$output_vcf" \
+        $(for chr in "${chrs[@]}"; do echo -n " -L $chr "; done) \
+--native-pair-hmm-threads 8
+
+# Check if the command succeeded
+    if [ $? -ne 0 ]; then
+        echo "Error: HaplotypeCaller failed for $bam_file" >&2
+    else
+        echo "HaplotypeCaller completed successfully for $bam_file"
+    fi
+}
+
+export -f haplotype_caller # Export function for GNU Parallel
+export ref_path out_path gatk_path # Export variables for GNU Parallel
+
+# Run the HaplotypeCaller function in parallel for each BAM file
+cat "$bam_list" | parallel -j 4 haplotype_caller {}
+
+# Disable debugging
+set +x
