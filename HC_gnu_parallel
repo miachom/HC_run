@@ -44,6 +44,7 @@ echo "Processing sample: $sample"
         -I "$bam_file" \
         -R "${ref_path}/GATK_ref/Homo_sapiens_assembly38.fasta" \
         -O "$output_vcf" \
+        -ERC GVCF \
         $(for chr in "${chrs[@]}"; do echo -n " -L $chr "; done) \
 --native-pair-hmm-threads 8
 
