@@ -59,7 +59,7 @@ export -f haplotype_caller # Export function for GNU Parallel
 export ref_path out_path gatk_path # Export variables for GNU Parallel
 
 # Run the HaplotypeCaller function in parallel for each BAM file
-cat "$bam_list" | parallel -j 4 haplotype_caller {}
+cat "$bam_list" | parallel -j 10 haplotype_caller {}
 
 # Disable debugging
 set +x
